@@ -1,6 +1,6 @@
 package Ex2;
 
-import ileiloes.ILeiloes;
+import ileilao.ILeiloes;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
