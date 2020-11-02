@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="PlayGameContract">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Libs/PlayGameContract.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
