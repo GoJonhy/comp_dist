@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="JARGeneration">
+  <library name="ILeilao">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/Libs/JARGeneration.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Libs/ILeilao.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

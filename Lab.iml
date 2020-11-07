@@ -8,6 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="PlayGameContract" level="project" />
-    <orderEntry type="library" name="JARGeneration" level="project" />
+    <orderEntry type="library" name="ILeilao" level="project" />
   </component>
 </module>
