@@ -4,7 +4,6 @@ import ileilao.ILeiloes;
 import ileilao.INotification;
 import ileilao.SomeObject;
 
-import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;

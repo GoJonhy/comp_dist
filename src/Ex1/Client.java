@@ -41,6 +41,5 @@ public class Client {
         } catch (Exception ex) {
             System.err.println("Ex1.Client unhandled exception: " + ex.toString());
         }
-
     }
 }
