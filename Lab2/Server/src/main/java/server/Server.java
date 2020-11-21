@@ -1,18 +1,29 @@
 package server;
 
+import centralstubs.CentralServiceGrpc;
+import centralstubs.Tariff;
+import centralstubs.Track;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
-import rpcstubs.*;
 import rpcstubs.Void;
+import rpcstubs.*;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Server extends ControlServiceGrpc.ControlServiceImplBase {
     static int svcPort=7000;
+    static int paymentServerPort = 7500;
+    static String paymentServerIP = "35.230.146.225";
 
-    //ID -- Entry Point
-    ConcurrentHashMap<String, CarInfo> cars = new ConcurrentHashMap<>();
+    //ID -- Ponto de entrada
+    ConcurrentHashMap<String, Integer> cars = new ConcurrentHashMap<>();
+
+    //Lista com os streamobservers que vão receber warningmessages
+    ArrayList<StreamObserver<WarnMsg>> replyWarnMsgList = new ArrayList<>();
 
     public static void main(String[] args) {
         try {
@@ -32,9 +43,7 @@ public class Server extends ControlServiceGrpc.ControlServiceImplBase {
     @Override
     public void enter(Initial request, StreamObserver<Void> responseObserver) {
         System.out.println("Car nº"+request.getId()+" entrou no ponto "+request.getInPoint());
-
-        cars.put(request.getId(), new CarInfo(request.getInPoint(), null));
-
+        cars.put(request.getId(), request.getInPoint());
         responseObserver.onNext(Void.newBuilder().build());
         responseObserver.onCompleted();
     }
@@ -51,7 +60,18 @@ public class Server extends ControlServiceGrpc.ControlServiceImplBase {
 
     @Override
     public void leave(FinalPoint request, StreamObserver<Payment> responseObserver) {
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(paymentServerIP, paymentServerPort).usePlaintext().build();
 
+        Track trck = Track.newBuilder().setGroup(6).setInPoint(cars.get(request.getId())).setOutPoint(request.getOutPoint()).build();
+
+        CentralServiceGrpc.CentralServiceBlockingStub blockingStub = CentralServiceGrpc.newBlockingStub(channel);
+        Tariff trf = blockingStub.payment(trck);
+        Payment payment = Payment.newBuilder().setValue(trf.getValue()).build();
+        responseObserver.onNext(payment);
+        responseObserver.onCompleted();
+
+        System.out.println("Car nº"+request.getId()+" saiu no ponto "+request.getOutPoint());
+        cars.remove(request.getId());
     }
 
     private class ServerStreamObserver implements StreamObserver<WarnMsg> {
@@ -64,34 +84,30 @@ public class Server extends ControlServiceGrpc.ControlServiceImplBase {
 
         @Override
         public void onNext(WarnMsg warnMsg) {
-            if (warnMsg.getWarning().equals("")){
-                CarInfo info = cars.get(warnMsg.getId());
-                info.replyToClient = clientReplyStream;
-                cars.computeIfPresent(warnMsg.getId(), (key, oldValue) -> info);
+            if (!replyWarnMsgList.contains(clientReplyStream)){
+                replyWarnMsgList.add(clientReplyStream);
             }
-            else {
-                //Mandar para todos
+
+            ArrayList<StreamObserver<WarnMsg>> streamsToRemove = new ArrayList<>();
+
+            for (StreamObserver<WarnMsg> rpl : replyWarnMsgList) {
+               try {
+                   rpl.onNext(warnMsg);
+               } catch (Exception e) {
+                   streamsToRemove.add(rpl);
+               }
             }
         }
 
         @Override
         public void onError(Throwable throwable) {
-
+            System.out.println("Error oncall:"+throwable.getMessage());
         }
 
         @Override
         public void onCompleted() {
             clientReplyStream.onCompleted();
-        }
-    }
-
-    private class CarInfo {
-        Integer entrada;
-        StreamObserver<WarnMsg> replyToClient;
-
-        public CarInfo(Integer entrada, StreamObserver<WarnMsg> replyToClient) {
-            this.entrada = entrada;
-            this.replyToClient = replyToClient;
+            replyWarnMsgList.remove(clientReplyStream);
         }
     }
 }

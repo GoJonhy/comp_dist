@@ -38,5 +38,14 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: cd:CentralContract:1.0">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../lib/CentralContract-1.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
