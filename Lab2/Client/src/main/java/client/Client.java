@@ -1,5 +1,6 @@
 package client;
 
+import io.grpc.ConnectivityState;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
@@ -15,8 +16,8 @@ public class Client {
     //static String svcIP="localhost";
     //static String svcIP="35.230.146.225";
     //static int svcPort=6000;
-    static String svcIP = "localhost";
-    static int svcPort = 7000;
+    static String svcIP = "35.234.134.33";
+    static int svcPort = 7500;
 
     private static String matricula;
     private static int inPoint;
@@ -28,7 +29,11 @@ public class Client {
 
 
         try {
-            ManagedChannel channel = ManagedChannelBuilder.forAddress(svcIP, svcPort).usePlaintext().build();
+            ManagedChannel channel = ManagedChannelBuilder
+                    .forAddress(svcIP, svcPort)
+                    .usePlaintext()
+                    .build();
+
             ControlServiceGrpc.ControlServiceStub stub = ControlServiceGrpc.newStub(channel);
             StreamObserverClient enterStream = new StreamObserverClient();
 

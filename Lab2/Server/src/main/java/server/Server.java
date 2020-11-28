@@ -11,11 +11,12 @@ import rpcstubs.Void;
 import rpcstubs.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Server extends ControlServiceGrpc.ControlServiceImplBase {
-    static int svcPort=7000;
+    static int svcPort=7500;
     static int paymentServerPort = 7500;
     static String paymentServerIP = "35.230.146.225";
 
@@ -31,8 +32,12 @@ public class Server extends ControlServiceGrpc.ControlServiceImplBase {
                     .forPort(svcPort)
                     .addService(new Server())
                     .build();
+
             svc.start();
+
             System.out.println("Server started, listening on " + svcPort);
+            System.out.println("PORT: "+svc.getPort());
+
             Scanner scan=new Scanner(System.in); scan.nextLine();
             svc.shutdown();
         }catch (Exception ex) {
