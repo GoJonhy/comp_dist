@@ -36,7 +36,6 @@ public class Server extends ControlServiceGrpc.ControlServiceImplBase {
             svc.start();
 
             System.out.println("Server started, listening on " + svcPort);
-            System.out.println("PORT: "+svc.getPort());
 
             Scanner scan=new Scanner(System.in); scan.nextLine();
             svc.shutdown();

@@ -21,12 +21,11 @@ public class Client {
 
     private static String matricula;
     private static int inPoint;
-    private static final Scanner scan = new Scanner(System.in);
+    private static final Scanner scan = new Scanner(System.in);1
     private static final StreamObserverWarnMsg warnings = new StreamObserverWarnMsg();
     private static StreamObserver<WarnMsg> sendToServer;
 
     public static void main(String[] args) {
-
 
         try {
             ManagedChannel channel = ManagedChannelBuilder
@@ -124,8 +123,11 @@ public class Client {
 
         @Override
         public void onError(Throwable throwable) {
-            isCompleted = true;
+            isCompleted = false;
             isSuccess = false;
+
+            System.out.println(throwable.getCause().toString());
+            System.out.println(throwable.getMessage());
         }
 
         @Override
