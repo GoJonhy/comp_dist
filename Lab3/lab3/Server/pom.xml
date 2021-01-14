@@ -35,20 +35,12 @@
         <!-- Dependência explícita -->
         <dependency>
             <groupId>cd</groupId>
-            <artifactId>Contract</artifactId>
+            <artifactId>ServerContract</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>${basedir}/../lib/Contract-1.0.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>cd</groupId>
-            <artifactId>CentralContract</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/../lib/CentralContract-1.0.jar</systemPath>
+            <systemPath>${basedir}/../lib/ServerContract-1.0-jar-with-dependencies.jar</systemPath>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>

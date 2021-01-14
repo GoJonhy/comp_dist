@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c7433c91-458b-4458-a4c4-da9b0031de69" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../Server/Server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Server.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/src/main/java/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/src/main/java/server/Server.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2020.2.3\plugins\maven\lib\maven3" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1kOMhSKbW0uhv6NJxi41WI7XvfJ" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/pom.xml" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.19195402" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Edgar\Desktop\ISEL\Computação Distribuida\comp_dist\Lab2\Contract\src\main\proto" />
+      <recent name="C:\Users\Edgar\Desktop\ISEL\Computação Distribuida\comp_dist\Lab2\Contract\src\main\java" />
+      <recent name="C:\Users\Edgar\Desktop\ISEL\Computação Distribuida\comp_dist\Lab2\Contract\src\main\java\proto" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <module />
+      <method />
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="TestNG">
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType">
+      <module name="" />
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+      <option name="PROGRAM_PARAMETERS" />
+      <predefined_log_file enabled="true" id="idea.log" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c7433c91-458b-4458-a4c4-da9b0031de69" name="Default Changelist" comment="" />
+      <created>1605567305050</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1605567305050</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="440" y="99" key="#Project_Structure" timestamp="1610658122068">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="440" y="99" key="#Project_Structure/0.0.1920.1050@0.0.1920.1050" timestamp="1610658122068" />
+    <state x="414" y="180" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1610575532659">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="414" y="180" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1050@0.0.1920.1050" timestamp="1610575532659" />
+    <state x="711" y="386" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1610576202705">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="711" y="386" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1920.1050@0.0.1920.1050" timestamp="1610576202705" />
+    <state x="740" y="280" key="FileChooserDialogImpl" timestamp="1610577273923">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="740" y="280" key="FileChooserDialogImpl/0.0.1920.1050@0.0.1920.1050" timestamp="1610577273923" />
+    <state width="1877" height="581" key="GridCell.Tab.0.bottom" timestamp="1610666735146">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1877" height="581" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1610666735146" />
+    <state width="1877" height="581" key="GridCell.Tab.0.center" timestamp="1610666735145">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1877" height="581" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1610666735145" />
+    <state width="1877" height="581" key="GridCell.Tab.0.left" timestamp="1610666735145">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1877" height="581" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1610666735145" />
+    <state width="1877" height="581" key="GridCell.Tab.0.right" timestamp="1610666735145">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1877" height="581" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1610666735145" />
+    <state x="461" y="170" key="SettingsEditor" timestamp="1610657176563">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="461" y="170" key="SettingsEditor/0.0.1920.1050@0.0.1920.1050" timestamp="1610657176563" />
+  </component>
+</project>

@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = 'rpcstubs';
+
+package baseservice; // package do proto
+
+service Server {
+ rpc Write(KeyValuePair) returns (Void) ;
+ rpc Read(Key) returns (Value) ;
+ rpc ReadChk(Key) returns (Value);
+ rpc ElectionProcess(Void) returns (Void);
+ rpc StopSelfElection(Void) returns (Void);
+ rpc InvalidateReplicas(Key) returns (Void);
+ rpc CreateReplica(KeyValuePair) returns (Void);
+}
+
+message Void {}
+
+message KeyValuePair {
+ Key k = 1;
+ Value v = 2;
+}
+
+message Key {
+ string k = 1;
+}
+
+message Value {
+ string v = 1;
+}
