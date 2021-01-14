@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = 'rpcstubs';
+
+package baseservice; // package do proto
+
+service ConfigurationService {
+ rpc GetClusterGroup(Void) returns (stream ServerFollower);
+}
+
+message Void {}
+
+message ServerFollower {
+ string ip = 1;
+}

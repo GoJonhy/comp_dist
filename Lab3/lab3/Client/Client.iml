@@ -38,5 +38,15 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: cd:ConfigurationServiceContract:1.0">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../lib/ConfigurationServiceContract-1.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="ConfigurationServiceContract-1.0-jar-with-dependencies" level="project" />
   </component>
 </module>

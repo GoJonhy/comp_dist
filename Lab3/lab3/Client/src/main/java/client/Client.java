@@ -4,22 +4,17 @@ import io.grpc.ConnectivityState;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
-import rpcstubs.ControlServiceGrpc;
 import rpcstubs.*;
 import rpcstubs.Void;
-import rpcstubs.WarnMsg;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class Client {
     static String svcIP = "localhost";
-    static int svcPort = 7500;
+    static int svcPort = 7800;
 
     static ArrayList<String> serverList = new ArrayList<>();
-    static ConfigurationServiceGrpc.ConfigurationServiceStub configurationStub;
+    static ConfigurationServiceGrpc.ConfigurationServiceBlockingStub configurationStub;
 
     private static final Scanner scan = new Scanner(System.in);
 
@@ -32,11 +27,11 @@ public class Client {
                     .usePlaintext()
                     .build();
 
-            configurationStub = ConfigurationServiceGrpc.newStub(configurationServiceChannel);
+            configurationStub = ConfigurationServiceGrpc.newBlockingStub(configurationServiceChannel);
 
-            ServerGrpc.ServerStub serverStub = chooseAvailableServer();
-
-            boolean cont = true;
+            //ServerGrpc.ServerStub serverStub = chooseAvailableServer();
+            chooseAvailableServer();
+            /*boolean cont = true;
             while (cont) {
                 System.out.println("Seleccione uma das seguintes opções: \n" +
                         "1 - Escrever; \n" +
@@ -46,19 +41,19 @@ public class Client {
 
                 switch (option) {
                     case 1:
-                        if (serverStub != null)
-                            write(serverStub);
+                        //if (serverStub != null)
+                        //    write(serverStub);
                         break;
                     case 2:
-                        if (serverStub != null)
-                            read(serverStub);
+                        //if (serverStub != null)
+                        //    read(serverStub);
                         break;
                     case 3:
                     default:
                         cont = false;
                         break;
                 }
-            }
+            }*/
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -73,37 +68,19 @@ public class Client {
         return rply.get(result);
     }
 
-    private static ServerGrpc.ServerStub chooseAvailableServer() {
+    //private static ServerGrpc.ServerStub chooseAvailableServer() {
+    private static void chooseAvailableServer() {
         // Blocking stub
         // eg: rply = 127.0.0.1:8080;127.0.0.2:8080;...
-        StreamObserver<ArrayList<String>> serverObserver = new StreamObserver<>() {
-            public boolean isCompleted = false;
-            public boolean isSuccess = false;
-            @Override
-            public void onNext(ArrayList<String> list) {
-                serverList.addAll(list);
-            }
+        Iterator<ServerFollower> svIterator = configurationStub.getClusterGroup(Void.newBuilder().build());
+        System.out.println("Available servers:");
+        while (svIterator.hasNext()) {
+            String sv = svIterator.next().getIp();
+            serverList.add(sv);
+            System.out.println(sv);
+        }
 
-            @Override
-            public void onError(Throwable throwable) {
-                isCompleted = true;
-                isSuccess = false;
-            }
-
-            @Override
-            public void onCompleted() {
-                isCompleted = true;
-                isSuccess = true;
-            }
-        };
-        configurationStub.getClusterGroup(serverObserver);
-
-        serverList.forEach(serverIP -> {
-            System.out.println("Available servers:");
-            System.out.println(serverIP);
-        });
-
-        if (serverList.isEmpty())
+        /*if (serverList.isEmpty())
             return null;
 
         // Choosing Random Server (eg: 127.0.0.1:8080)
@@ -148,15 +125,15 @@ public class Client {
         if (responseObserver.isCompleted && responseObserver.isSuccess)
             return serverStub;
         else
-            return chooseAvailableServer();
+            return chooseAvailableServer();*/
     }
 
-    private static void write (ServerGrpc.ServerStub serverStub) {
+/*    private static void write (ServerGrpc.ServerStub serverStub) {
         System.out.println("Indique a chave do objecto: \n");
         String key = scan.nextLine();
         System.out.println("Indique o valor do objecto: \n");
         String value = scan.nextLine();
-        ReqWrite req = ReqWrite.newBuilder().setKey(key).setValue(value).build();
+       *//* ReqWrite req = ReqWrite.newBuilder().setKey(key).setValue(value).build();*//*
         StreamObserver<Void> responseObserver = new StreamObserver<>() {
             public boolean isCompleted = false;
             public boolean isSuccess = false;
@@ -255,34 +232,7 @@ public class Client {
         System.out.println("Indique a chave do objecto: \n");
         String key = scan.nextLine();
         ReqRead req = ReqRead.newBuilder().setKey(key).build();
-        StreamObserver<String> responseObserver = new StreamObserver<>() {
-            public boolean isCompleted = false;
-            public boolean isSuccess = false;
-            @Override
-            public void onNext(String s) {
-                System.out.printf("Object[%s] = %s", key, s);
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                isCompleted = true;
-                isSuccess = false;
-                System.out.println(throwable.getMessage());
-                System.out.println(throwable.getMessage());
-                if(askForRetry()) {
-                    ServerGrpc.ServerStub newStub = chooseAvailableServer();
-                    if (newStub != null) {
-                        read(newStub, key);
-                    }
-                }
-            }
-
-            @Override
-            public void onCompleted() {
-                isCompleted = true;
-                isSuccess = true;
-            }
-        };
+        StreamObserverReadResponse responseObserver = new StreamObserverReadResponse
         serverStub.read(req, responseObserver);
     }
 
@@ -291,7 +241,7 @@ public class Client {
         System.out.println("Retry? \n 1 - Yes \n 2 or other - No \n");
         int option = scan.nextInt();
         return option == 1;
-    }
+    }*/
 
 /*
     //A implementação de pingServer é idêntica à operação case1
@@ -301,4 +251,54 @@ public class Client {
         responseObserver.onCompleted();
     }
 */
+
+    private static class StreamObserverServerFollower implements StreamObserver<ServerFollower> {
+        public boolean isCompleted = false;
+        public boolean isSuccess = false;
+        @Override
+        public void onNext(ServerFollower server) {
+            serverList.add(server.getIp());
+        }
+
+        @Override
+        public void onError(Throwable throwable) {
+            isCompleted = true;
+            isSuccess = false;
+            System.out.println(throwable.getMessage());
+        }
+
+        @Override
+        public void onCompleted() {
+            isCompleted = true;
+            isSuccess = true;
+        }
+    }
+    /*private static class StreamObserverReadResponse implements StreamObserver<String> {
+        public boolean isCompleted = false;
+        public boolean isSuccess = false;
+        @Override
+        public void onNext(String s) {
+            System.out.printf("Object[%s] = %s", key, s);
+        }
+
+        @Override
+        public void onError(Throwable throwable) {
+            isCompleted = true;
+            isSuccess = false;
+            System.out.println(throwable.getMessage());
+            System.out.println(throwable.getMessage());
+            if(askForRetry()) {
+                ServerGrpc.ServerStub newStub = chooseAvailableServer();
+                if (newStub != null) {
+                    read(newStub, key);
+                }
+            }
+        }
+
+        @Override
+        public void onCompleted() {
+            isCompleted = true;
+            isSuccess = true;
+        }
+    }*/
 }

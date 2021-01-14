@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="ConfigurationServiceContract-1.0-jar-with-dependencies">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../lib/ConfigurationServiceContract-1.0-jar-with-dependencies.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
