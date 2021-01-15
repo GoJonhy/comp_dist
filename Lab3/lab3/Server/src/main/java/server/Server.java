@@ -20,19 +20,25 @@ import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Server extends ServerGrpc.ServerImplBase {
+
+    //this Server
     static int svcPort;
     static String svcIP;
 
+    //Spread
     static SpreadConnection connection;
     static SpreadGroup spreadGroup;
 
+    //Server Daemon
     static String daemonAddress = "";
     static int daemonPort = 0;
 
+    //Server Monitor
     static String monitorIP;
     static int monitorPort;
     static boolean isMonitor = false;
 
+    //Server DB secondary memory
     static ConcurrentHashMap<String, String> db = new ConcurrentHashMap<>();
 
     static Scanner scan = new Scanner(System.in);
@@ -51,16 +57,24 @@ public class Server extends ServerGrpc.ServerImplBase {
             svc.start();
 
             connection = new SpreadConnection();
-            connection.connect(InetAddress.getByName(daemonAddress), daemonPort, svcIP+":"+svcPort, false, true);
+            connection.connect(InetAddress.getByName(daemonAddress), daemonPort, svcIP + ":" + svcPort, false, true);
 
             spreadGroup = new SpreadGroup();
 
             spreadGroup.join(connection, "1"); //To join a specific group (1) → Associa connection ao grupo
 
+            //if group has no members, then current server will become the monitor
+            if (msg.getMembershipInfo().getMembers() == null) {
+                monitorIP = svcIP;
+                monitorPort = svcPort;
+                isMonitor = true;
+            }
+
             System.out.println("Server started, listening on " + svcPort);
             scan.nextLine();
             connection.disconnect();
             svc.shutdown();
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -71,7 +85,7 @@ public class Server extends ServerGrpc.ServerImplBase {
         String val = db.get(request.getK());
         if (val == null) {
             //Key não existe no servidor
-            try{
+            try {
                 SpreadMessage msg = new SpreadMessage();
                 msg.setSafe();
                 msg.addGroup("1");
@@ -90,11 +104,10 @@ public class Server extends ServerGrpc.ServerImplBase {
                     configurationStub.readChk(request, responseObserver);
                 }
 
-            }catch (SpreadException e) {
+            } catch (SpreadException e) {
                 e.printStackTrace();
             }
-        }
-        else {
+        } else {
             //Key existe no servidor
             responseObserver.onNext(Value.newBuilder().setV(val).build());
             responseObserver.onCompleted();
@@ -107,8 +120,7 @@ public class Server extends ServerGrpc.ServerImplBase {
         if (val == null) {
             //Key não existe no servidor
             responseObserver.onError(new Throwable());
-        }
-        else {
+        } else {
             //Key existe no servidor
             responseObserver.onNext(Value.newBuilder().setV(val).build());
             responseObserver.onCompleted();
@@ -117,7 +129,6 @@ public class Server extends ServerGrpc.ServerImplBase {
 
     @Override
     public void write(KeyValuePair request, StreamObserver<Void> responseObserver) {
-
         /*
           KeyValuePair: {
             k: {
@@ -129,11 +140,10 @@ public class Server extends ServerGrpc.ServerImplBase {
           }
          */
         StreamObserverInvalidateReplica rplcaStream = new StreamObserverInvalidateReplica();
-        if(isMonitor) {
+        if (isMonitor) {
             invalidateReplicas(request.getK(), rplcaStream);
-        }
-        else {
-            try{
+        } else {
+            try {
                 SpreadMessage msg = new SpreadMessage();
                 msg.setSafe();
                 msg.addGroup("1");
@@ -143,27 +153,32 @@ public class Server extends ServerGrpc.ServerImplBase {
                     String[] strSplit = member.toString().split(":");
                     String follwrIP = strSplit[0];
                     int followrPrt = Integer.parseInt(strSplit[1]);
+                    //Create connection with Server Monitor
                     ManagedChannel monitorServerChannel = ManagedChannelBuilder
                             .forAddress(follwrIP, followrPrt)
                             .usePlaintext()
                             .build();
 
                     ServerGrpc.ServerStub monitorStub = ServerGrpc.newStub(monitorServerChannel);
-                    monitorStub.invalidateReplicas(request.getK(), rplcaStream);
-                    while(!rplcaStream.isCompleted){
-                        System.out.println("Waiting For Monitor to conclude Invalidations...");
-                        Thread.sleep(4000);
+                    //if connection fails, begin election process
+                    if (monitorServerChannel.getState() == ConnectivityState.TRANSIENT_FAILURE) {
+                        electionProcess();
+
+                    } else {
+                        monitorStub.invalidateReplicas(request.getK(), rplcaStream);
+                        while (!rplcaStream.isCompleted) {
+                            System.out.println("Waiting For Monitor to conclude Invalidations...");
+                            Thread.sleep(4000);
+                        }
                     }
                 }
 
-            }catch (SpreadException e) {
+            } catch (SpreadException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-
-
 
         db.put(request.getK().getK(), request.getV().getV());
 
@@ -178,14 +193,14 @@ public class Server extends ServerGrpc.ServerImplBase {
             FileWriter writer = new FileWriter(file);
 
             // Writes the content to the file
-            StringBuilder text= new StringBuilder();
-            for(Map.Entry<String, String> entry : db.entrySet()) {
+            StringBuilder text = new StringBuilder();
+            for (Map.Entry<String, String> entry : db.entrySet()) {
                 text.append(entry.getKey()).append(" ").append(entry.getValue()).append("\n");
             }
             writer.write(text.toString());
             writer.flush();
             writer.close();
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -193,82 +208,118 @@ public class Server extends ServerGrpc.ServerImplBase {
         responseObserver.onCompleted();
     }
 
+    /*   */
     @Override
     public void electionProcess(Void request, StreamObserver<Void> responseObserver) {
-        super.electionProcess(request, responseObserver);
-    }
+        for (SpreadGroup member : msg.getMembershipInfo().getMembers()) {
+            String[] strSplit = member.toString().split(":");
+            String follwrIP = strSplit[0];
+            int followrPrt = Integer.parseInt(strSplit[1]);
+            //Create connection with Server
+            ManagedChannel = ManagedChannelBuilder
+                    .forAddress(follwrIP, followrPrt)
+                    .usePlaintext()
+                    .build();
 
-    @Override
-    public void stopSelfElection(Void request, StreamObserver<Void> responseObserver) {
-        super.stopSelfElection(request, responseObserver);
-    }
+            StringBuilder sb = new StringBuilder();
+            sb.append(svcIP + ":" + svcPort.toString());
 
-    @Override
-    public void invalidateReplicas(Key request, StreamObserver<Void> responseObserver) {
-        responseObserver.onNext(Void.newBuilder().build());
-        responseObserver.onCompleted();
-    }
+            Request req = Request.newBuilder().setReqID(100).setTxt(sb.toString()).build();
 
-    @Override
-    public void createReplica(KeyValuePair request, StreamObserver<Void> responseObserver) {
-        responseObserver.onNext(Void.newBuilder().build());
-        responseObserver.onCompleted();
-    }
+            StreamObserver replyStreamObserver = new ClientStreamObserver();
+            noBlockStub.stopSelfElection(req, replyStreamObserver);
 
-    //Só para exemplo
-    private static class StreamObserverCheckObj implements StreamObserver<Value> {
-        public boolean isCompleted = false;
-        public boolean isSuccess = false;
-        /*
-            -1 = Nao tem obj ;
-            0 = Ainda não respondeu ;
-            1 = Tem obj
-         */
-        public int hasObj = 0;
-        @Override
-        public void onNext(Value server) {
-            hasObj = 1;
+            while (!replyStreamObserver.isCompleted()) {
+                System.out.println("cliente active");
+                Thread.sleep(1 * 1000);
+            }
+
+            List<Reply> replies = replyStreamObserver.getReplays();
+            if (replyStreamObserver.OnSuccesss()) {
+                for (Reply rpy : replyStreamObserver.getReplays()) {
+                    System.out.println("Reply for Case1:" + rpy.getRplyID() + ":" + rpy.getTxt());
+                }
+            }
+
+
+            //super.electionProcess(request, responseObserver);
+
+
         }
 
         @Override
-        public void onError(Throwable throwable) {
-            isCompleted = true;
-            isSuccess = false;
-            hasObj = -1;
-            System.out.println(throwable.getMessage());
+        public void stopSelfElection (Void request, StreamObserver < Void > responseObserver){
+            super.stopSelfElection(request, responseObserver);
         }
 
         @Override
-        public void onCompleted() {
-            isCompleted = true;
-            isSuccess = true;
+        public void invalidateReplicas (Key request, StreamObserver < Void > responseObserver){
+            responseObserver.onNext(Void.newBuilder().build());
+            responseObserver.onCompleted();
+        }
+
+        @Override
+        public void createReplica (KeyValuePair request, StreamObserver < Void > responseObserver){
+            responseObserver.onNext(Void.newBuilder().build());
+            responseObserver.onCompleted();
+        }
+
+        //Só para exemplo
+        private static class StreamObserverCheckObj implements StreamObserver<Value> {
+            public boolean isCompleted = false;
+            public boolean isSuccess = false;
+            /*
+                -1 = Nao tem obj ;
+                0 = Ainda não respondeu ;
+                1 = Tem obj
+             */
+            public int hasObj = 0;
+
+            @Override
+            public void onNext(Value server) {
+                hasObj = 1;
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                isCompleted = true;
+                isSuccess = false;
+                hasObj = -1;
+                System.out.println(throwable.getMessage());
+            }
+
+            @Override
+            public void onCompleted() {
+                isCompleted = true;
+                isSuccess = true;
+            }
+        }
+
+        private static class StreamObserverInvalidateReplica implements StreamObserver<Void> {
+            public boolean isCompleted = false;
+            public boolean isSuccess = false;
+            /*
+                0 = Ainda não respondeu ;
+                1 = invalidou
+             */
+            public boolean invalidation = false;
+
+            @Override
+            public void onNext(Void server) {
+                invalidation = true;
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                isCompleted = true;
+                isSuccess = false;
+                System.out.println(throwable.getMessage());
+            }
+
+            @Override
+            public void onCompleted() {
+                isCompleted = true;
+                isSuccess = true;
+            }
         }
     }
-
-    private static class StreamObserverInvalidateReplica implements StreamObserver<Void> {
-        public boolean isCompleted = false;
-        public boolean isSuccess = false;
-        /*
-            0 = Ainda não respondeu ;
-            1 = invalidou
-         */
-        public boolean invalidation = false;
-        @Override
-        public void onNext(Void server) {
-            invalidation = true;
-        }
-
-        @Override
-        public void onError(Throwable throwable) {
-            isCompleted = true;
-            isSuccess = false;
-            System.out.println(throwable.getMessage());
-        }
-
-        @Override
-        public void onCompleted() {
-            isCompleted = true;
-            isSuccess = true;
-        }
-    }
-}
