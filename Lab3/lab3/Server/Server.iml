@@ -9,6 +9,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="ServerContract-1.0-jar-with-dependencies" level="project" />
+    <orderEntry type="library" name="spread-4.4.0" level="project" />
     <orderEntry type="library" name="Maven: io.grpc:grpc-netty-shaded:1.33.1" level="project" />
     <orderEntry type="library" name="Maven: io.grpc:grpc-core:1.33.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.google.code.gson:gson:2.8.6" level="project" />
@@ -30,24 +32,13 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.codehaus.mojo:animal-sniffer-annotations:1.18" level="project" />
     <orderEntry type="library" name="Maven: io.grpc:grpc-stub:1.33.1" level="project" />
     <orderEntry type="module-library">
-      <library name="Maven: cd:Contract:1.0">
+      <library name="Maven: cd:ServerContract:1.0">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/Contract-1.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../lib/ServerContract-1.0-jar-with-dependencies.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
-      <library name="Maven: cd:CentralContract:1.0">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/CentralContract-1.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="library" name="ServerContract-1.0-jar-with-dependencies" level="project" />
-    <orderEntry type="library" name="spread-4.4.0" level="project" />
   </component>
 </module>

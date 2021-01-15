@@ -1,5 +1,6 @@
 package server;
 
+import io.grpc.ConnectivityState;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.ServerBuilder;
@@ -15,11 +16,16 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Server extends ServerGrpc.ServerImplBase {
+
+    static Timestamp timeStamp;
+    static boolean stopMonitorRequests = false;
 
     //this Server
     static int svcPort;
@@ -47,8 +53,13 @@ public class Server extends ServerGrpc.ServerImplBase {
         try {
             System.out.println("Insert VM IP: ");
             svcIP = scan.nextLine();
-            System.out.println("Insert Port: ");
+            System.out.println("Insert VM Port: ");
             svcPort = scan.nextInt();
+
+            System.out.println("Insert Daemon IP: ");
+            daemonAddress = scan.nextLine();
+            System.out.println("Insert Daemon Port: ");
+            daemonPort = scan.nextInt();
 
             io.grpc.Server svc = ServerBuilder
                     .forPort(svcPort)
@@ -64,6 +75,11 @@ public class Server extends ServerGrpc.ServerImplBase {
             spreadGroup.join(connection, "1"); //To join a specific group (1) → Associa connection ao grupo
 
             //if group has no members, then current server will become the monitor
+            SpreadMessage msg = new SpreadMessage();
+            msg.setSafe();
+            msg.addGroup("1");
+            msg.setData("ping".getBytes());
+            connection.multicast(msg);
             if (msg.getMembershipInfo().getMembers() == null) {
                 monitorIP = svcIP;
                 monitorPort = svcPort;
@@ -161,8 +177,8 @@ public class Server extends ServerGrpc.ServerImplBase {
 
                     ServerGrpc.ServerStub monitorStub = ServerGrpc.newStub(monitorServerChannel);
                     //if connection fails, begin election process
-                    if (monitorServerChannel.getState() == ConnectivityState.TRANSIENT_FAILURE) {
-                        electionProcess();
+                    if (monitorServerChannel.getState(true) == ConnectivityState.TRANSIENT_FAILURE) {
+                        electionProcess(Void.newBuilder().build(), new StreamObserverGeneric() );
 
                     } else {
                         monitorStub.invalidateReplicas(request.getK(), rplcaStream);
@@ -182,6 +198,157 @@ public class Server extends ServerGrpc.ServerImplBase {
 
         db.put(request.getK().getK(), request.getV().getV());
 
+       writeToFile();
+
+        responseObserver.onNext(Void.newBuilder().build());
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void electionProcess(Void request, StreamObserver<Void> responseObserver) {
+        try {
+            timeStamp = new Timestamp(System.currentTimeMillis());
+            monitorIP = "";
+            monitorPort = 0;
+            SpreadMessage msg = new SpreadMessage();
+            msg.setSafe();
+            msg.addGroup("1");
+            msg.setData("ping".getBytes());
+            connection.multicast(msg);
+            ArrayList<StreamObserverGeneric> replies = new ArrayList<>();
+            for (SpreadGroup member : msg.getMembershipInfo().getMembers()) {
+                String[] strSplit = member.toString().split(":");
+                String follwrIP = strSplit[0];
+                int followrPrt = Integer.parseInt(strSplit[1]);
+                //Create connection with Server
+                ManagedChannel serverConnection = ManagedChannelBuilder
+                        .forAddress(follwrIP, followrPrt)
+                        .usePlaintext()
+                        .build();
+                ServerGrpc.ServerStub svStub = ServerGrpc.newStub(serverConnection);
+                MonitorObj req = MonitorObj.newBuilder().setIp(svcIP).setPort(svcPort).setTimestamp(timeStamp.getTime()).build();
+
+                StreamObserverGeneric replyStreamObserver = new StreamObserverGeneric();
+                replies.add(replyStreamObserver);
+                svStub.stopSelfElection(req, replyStreamObserver);
+            }
+
+            boolean answers = false;
+            while(!answers) {
+                answers = replies.stream().allMatch(rply -> rply.isCompleted);
+            }
+
+            if (monitorIP.equals("") && monitorPort == 0) {
+                isMonitor = true;
+                monitorIP = svcIP;
+                monitorPort = svcPort;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void stopSelfElection(MonitorObj request, StreamObserver<Void> responseObserver) {
+        if (timeStamp == null || timeStamp.getTime() < request.getTimestamp()) {
+            isMonitor = false;
+            monitorIP = request.getIp();
+            monitorPort = request.getPort();
+        }
+        responseObserver.onNext(Void.newBuilder().build());
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void invalidateReplicas(Key request, StreamObserver<Void> responseObserver) {
+        try {
+            SpreadMessage msg = new SpreadMessage();
+            msg.setSafe();
+            msg.addGroup("1");
+            msg.setData("ping".getBytes());
+            connection.multicast(msg);
+            ArrayList<StreamObserverGeneric> replies = new ArrayList<>();
+            for (SpreadGroup member : msg.getMembershipInfo().getMembers()) {
+                String[] strSplit = member.toString().split(":");
+                String follwrIP = strSplit[0];
+                int followrPrt = Integer.parseInt(strSplit[1]);
+                //Create connection with Server
+                ManagedChannel serverConnection = ManagedChannelBuilder
+                        .forAddress(follwrIP, followrPrt)
+                        .usePlaintext()
+                        .build();
+                ServerGrpc.ServerStub svStub = ServerGrpc.newStub(serverConnection);
+                MonitorObj req = MonitorObj.newBuilder().setIp(svcIP).setPort(svcPort).setTimestamp(timeStamp.getTime()).build();
+
+                StreamObserverGeneric replyStreamObserver = new StreamObserverGeneric();
+                replies.add(replyStreamObserver);
+                svStub.receiveInvalidateReplicas(request, replyStreamObserver);
+            }
+
+            boolean answers = false;
+            while(!answers) {
+                answers = replies.stream().allMatch(rply -> rply.isCompleted);
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void receiveInvalidateReplicas(Key request, StreamObserver<Void> responseObserver) {
+        if (db.get(request.getK()) != null) {
+            db.remove(request.getK());
+            writeToFile();
+        }
+        responseObserver.onNext(Void.newBuilder().build());
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void createReplica(KeyValuePair request, StreamObserver<Void> responseObserver) {
+        try {
+            SpreadMessage msg = new SpreadMessage();
+            msg.setSafe();
+            msg.addGroup("1");
+            msg.setData("ping".getBytes());
+            connection.multicast(msg);
+            ArrayList<StreamObserverGeneric> replies = new ArrayList<>();
+            for (SpreadGroup member : msg.getMembershipInfo().getMembers()) {
+                String[] strSplit = member.toString().split(":");
+                String follwrIP = strSplit[0];
+                int followrPrt = Integer.parseInt(strSplit[1]);
+                //Create connection with Server
+                ManagedChannel serverConnection = ManagedChannelBuilder
+                        .forAddress(follwrIP, followrPrt)
+                        .usePlaintext()
+                        .build();
+                ServerGrpc.ServerStub svStub = ServerGrpc.newStub(serverConnection);
+                MonitorObj req = MonitorObj.newBuilder().setIp(svcIP).setPort(svcPort).setTimestamp(timeStamp.getTime()).build();
+
+                StreamObserverGeneric replyStreamObserver = new StreamObserverGeneric();
+                replies.add(replyStreamObserver);
+                svStub.receiveCreateReplica(request, replyStreamObserver);
+            }
+
+            boolean answers = false;
+            while(!answers) {
+                answers = replies.stream().allMatch(rply -> rply.isCompleted);
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void receiveCreateReplica(KeyValuePair request, StreamObserver<Void> responseObserver) {
+        db.put(request.getK().getK(), request.getV().getV());
+        writeToFile();
+        responseObserver.onNext(Void.newBuilder().build());
+        responseObserver.onCompleted();
+    }
+
+    private static void writeToFile() {
         try {
             //write to file
             File file = new File("db.txt");
@@ -203,123 +370,56 @@ public class Server extends ServerGrpc.ServerImplBase {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        responseObserver.onNext(Void.newBuilder().build());
-        responseObserver.onCompleted();
     }
 
-    /*   */
-    @Override
-    public void electionProcess(Void request, StreamObserver<Void> responseObserver) {
-        for (SpreadGroup member : msg.getMembershipInfo().getMembers()) {
-            String[] strSplit = member.toString().split(":");
-            String follwrIP = strSplit[0];
-            int followrPrt = Integer.parseInt(strSplit[1]);
-            //Create connection with Server
-            ManagedChannel = ManagedChannelBuilder
-                    .forAddress(follwrIP, followrPrt)
-                    .usePlaintext()
-                    .build();
+    private static class StreamObserverGeneric implements StreamObserver<Void> {
+        public boolean isCompleted = false;
+        public boolean isSuccess = false;
 
-            StringBuilder sb = new StringBuilder();
-            sb.append(svcIP + ":" + svcPort.toString());
-
-            Request req = Request.newBuilder().setReqID(100).setTxt(sb.toString()).build();
-
-            StreamObserver replyStreamObserver = new ClientStreamObserver();
-            noBlockStub.stopSelfElection(req, replyStreamObserver);
-
-            while (!replyStreamObserver.isCompleted()) {
-                System.out.println("cliente active");
-                Thread.sleep(1 * 1000);
-            }
-
-            List<Reply> replies = replyStreamObserver.getReplays();
-            if (replyStreamObserver.OnSuccesss()) {
-                for (Reply rpy : replyStreamObserver.getReplays()) {
-                    System.out.println("Reply for Case1:" + rpy.getRplyID() + ":" + rpy.getTxt());
-                }
-            }
-
-
-            //super.electionProcess(request, responseObserver);
-
+        @Override
+        public void onNext(Void server) {
 
         }
 
         @Override
-        public void stopSelfElection (Void request, StreamObserver < Void > responseObserver){
-            super.stopSelfElection(request, responseObserver);
+        public void onError(Throwable throwable) {
+            isCompleted = true;
+            isSuccess = false;
+            System.out.println(throwable.getMessage());
         }
 
         @Override
-        public void invalidateReplicas (Key request, StreamObserver < Void > responseObserver){
-            responseObserver.onNext(Void.newBuilder().build());
-            responseObserver.onCompleted();
-        }
-
-        @Override
-        public void createReplica (KeyValuePair request, StreamObserver < Void > responseObserver){
-            responseObserver.onNext(Void.newBuilder().build());
-            responseObserver.onCompleted();
-        }
-
-        //Só para exemplo
-        private static class StreamObserverCheckObj implements StreamObserver<Value> {
-            public boolean isCompleted = false;
-            public boolean isSuccess = false;
-            /*
-                -1 = Nao tem obj ;
-                0 = Ainda não respondeu ;
-                1 = Tem obj
-             */
-            public int hasObj = 0;
-
-            @Override
-            public void onNext(Value server) {
-                hasObj = 1;
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                isCompleted = true;
-                isSuccess = false;
-                hasObj = -1;
-                System.out.println(throwable.getMessage());
-            }
-
-            @Override
-            public void onCompleted() {
-                isCompleted = true;
-                isSuccess = true;
-            }
-        }
-
-        private static class StreamObserverInvalidateReplica implements StreamObserver<Void> {
-            public boolean isCompleted = false;
-            public boolean isSuccess = false;
-            /*
-                0 = Ainda não respondeu ;
-                1 = invalidou
-             */
-            public boolean invalidation = false;
-
-            @Override
-            public void onNext(Void server) {
-                invalidation = true;
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                isCompleted = true;
-                isSuccess = false;
-                System.out.println(throwable.getMessage());
-            }
-
-            @Override
-            public void onCompleted() {
-                isCompleted = true;
-                isSuccess = true;
-            }
+        public void onCompleted() {
+            isCompleted = true;
+            isSuccess = true;
         }
     }
+
+    private static class StreamObserverInvalidateReplica implements StreamObserver<Void> {
+        public boolean isCompleted = false;
+        public boolean isSuccess = false;
+        /*
+            0 = Ainda não respondeu ;
+            1 = invalidou
+         */
+        public boolean invalidation = false;
+
+        @Override
+        public void onNext(Void server) {
+            invalidation = true;
+        }
+
+        @Override
+        public void onError(Throwable throwable) {
+            isCompleted = true;
+            isSuccess = false;
+            System.out.println(throwable.getMessage());
+        }
+
+        @Override
+        public void onCompleted() {
+            isCompleted = true;
+            isSuccess = true;
+        }
+    }
+}

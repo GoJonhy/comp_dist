@@ -43,47 +43,6 @@ public class ConfigurationService extends ConfigurationServiceGrpc.Configuration
         ArrayList<String> followers = new ArrayList<String>();
 
 
-        /*if (connection == null) {
-            try {
-                connection = new SpreadConnection();
-                connection.connect(InetAddress.getByName(daemonAddress), daemonPort, user, false, true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            //connection.disconnect();
-        }
-
-        if (spreadGroup == null) {
-            spreadGroup = new SpreadGroup();
-            try {
-                spreadGroup.join(connection, "1"); //To join a specific group (1) → Associa connection ao grupo
-                SpreadMessage msg = new SpreadMessage();
-                msg.setSafe();
-                msg.addGroup("1");
-                msg.setData("ping".getBytes());
-                connection.multicast(msg);
-                for (SpreadGroup member : msg.getMembershipInfo().getMembers())
-                    followers.add(member.toString());
-                followers.remove(user);
-            } catch (SpreadException e) {
-                e.printStackTrace();
-            }
-        }*/
-        followers.add("111.111.111:89");
-        followers.add("222.222.222:91");
-        followers.forEach( it -> {
-            ServerFollower sv = ServerFollower.newBuilder().setIp(it).build();
-            responseObserver.onNext(sv);
-        });
-
-        responseObserver.onCompleted();
-    }
-
-/*
-    //Get servers
-    @Override
-    public static void test(StreamObserver<ServerFollower> list) {
-        ArrayList<String> followers = new ArrayList<String>();
         if (connection == null) {
             try {
                 connection = new SpreadConnection();
@@ -93,6 +52,7 @@ public class ConfigurationService extends ConfigurationServiceGrpc.Configuration
             }
             //connection.disconnect();
         }
+
         if (spreadGroup == null) {
             spreadGroup = new SpreadGroup();
             try {
@@ -111,10 +71,9 @@ public class ConfigurationService extends ConfigurationServiceGrpc.Configuration
         }
         followers.forEach( it -> {
             ServerFollower sv = ServerFollower.newBuilder().setIp(it).build();
-            list.onNext(sv);
+            responseObserver.onNext(sv);
         });
 
-        list.onCompleted();
+        responseObserver.onCompleted();
     }
-    */
 }

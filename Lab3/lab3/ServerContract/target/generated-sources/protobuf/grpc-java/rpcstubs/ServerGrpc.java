@@ -151,27 +151,27 @@ public final class ServerGrpc {
     return getElectionProcessMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<rpcstubs.Void,
+  private static volatile io.grpc.MethodDescriptor<rpcstubs.MonitorObj,
       rpcstubs.Void> getStopSelfElectionMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "StopSelfElection",
-      requestType = rpcstubs.Void.class,
+      requestType = rpcstubs.MonitorObj.class,
       responseType = rpcstubs.Void.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<rpcstubs.Void,
+  public static io.grpc.MethodDescriptor<rpcstubs.MonitorObj,
       rpcstubs.Void> getStopSelfElectionMethod() {
-    io.grpc.MethodDescriptor<rpcstubs.Void, rpcstubs.Void> getStopSelfElectionMethod;
+    io.grpc.MethodDescriptor<rpcstubs.MonitorObj, rpcstubs.Void> getStopSelfElectionMethod;
     if ((getStopSelfElectionMethod = ServerGrpc.getStopSelfElectionMethod) == null) {
       synchronized (ServerGrpc.class) {
         if ((getStopSelfElectionMethod = ServerGrpc.getStopSelfElectionMethod) == null) {
           ServerGrpc.getStopSelfElectionMethod = getStopSelfElectionMethod =
-              io.grpc.MethodDescriptor.<rpcstubs.Void, rpcstubs.Void>newBuilder()
+              io.grpc.MethodDescriptor.<rpcstubs.MonitorObj, rpcstubs.Void>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "StopSelfElection"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  rpcstubs.Void.getDefaultInstance()))
+                  rpcstubs.MonitorObj.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   rpcstubs.Void.getDefaultInstance()))
               .setSchemaDescriptor(new ServerMethodDescriptorSupplier("StopSelfElection"))
@@ -213,6 +213,37 @@ public final class ServerGrpc {
     return getInvalidateReplicasMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<rpcstubs.Key,
+      rpcstubs.Void> getReceiveInvalidateReplicasMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "ReceiveInvalidateReplicas",
+      requestType = rpcstubs.Key.class,
+      responseType = rpcstubs.Void.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<rpcstubs.Key,
+      rpcstubs.Void> getReceiveInvalidateReplicasMethod() {
+    io.grpc.MethodDescriptor<rpcstubs.Key, rpcstubs.Void> getReceiveInvalidateReplicasMethod;
+    if ((getReceiveInvalidateReplicasMethod = ServerGrpc.getReceiveInvalidateReplicasMethod) == null) {
+      synchronized (ServerGrpc.class) {
+        if ((getReceiveInvalidateReplicasMethod = ServerGrpc.getReceiveInvalidateReplicasMethod) == null) {
+          ServerGrpc.getReceiveInvalidateReplicasMethod = getReceiveInvalidateReplicasMethod =
+              io.grpc.MethodDescriptor.<rpcstubs.Key, rpcstubs.Void>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "ReceiveInvalidateReplicas"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  rpcstubs.Key.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  rpcstubs.Void.getDefaultInstance()))
+              .setSchemaDescriptor(new ServerMethodDescriptorSupplier("ReceiveInvalidateReplicas"))
+              .build();
+        }
+      }
+    }
+    return getReceiveInvalidateReplicasMethod;
+  }
+
   private static volatile io.grpc.MethodDescriptor<rpcstubs.KeyValuePair,
       rpcstubs.Void> getCreateReplicaMethod;
 
@@ -242,6 +273,37 @@ public final class ServerGrpc {
       }
     }
     return getCreateReplicaMethod;
+  }
+
+  private static volatile io.grpc.MethodDescriptor<rpcstubs.KeyValuePair,
+      rpcstubs.Void> getReceiveCreateReplicaMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "ReceiveCreateReplica",
+      requestType = rpcstubs.KeyValuePair.class,
+      responseType = rpcstubs.Void.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<rpcstubs.KeyValuePair,
+      rpcstubs.Void> getReceiveCreateReplicaMethod() {
+    io.grpc.MethodDescriptor<rpcstubs.KeyValuePair, rpcstubs.Void> getReceiveCreateReplicaMethod;
+    if ((getReceiveCreateReplicaMethod = ServerGrpc.getReceiveCreateReplicaMethod) == null) {
+      synchronized (ServerGrpc.class) {
+        if ((getReceiveCreateReplicaMethod = ServerGrpc.getReceiveCreateReplicaMethod) == null) {
+          ServerGrpc.getReceiveCreateReplicaMethod = getReceiveCreateReplicaMethod =
+              io.grpc.MethodDescriptor.<rpcstubs.KeyValuePair, rpcstubs.Void>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "ReceiveCreateReplica"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  rpcstubs.KeyValuePair.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  rpcstubs.Void.getDefaultInstance()))
+              .setSchemaDescriptor(new ServerMethodDescriptorSupplier("ReceiveCreateReplica"))
+              .build();
+        }
+      }
+    }
+    return getReceiveCreateReplicaMethod;
   }
 
   /**
@@ -322,7 +384,7 @@ public final class ServerGrpc {
 
     /**
      */
-    public void stopSelfElection(rpcstubs.Void request,
+    public void stopSelfElection(rpcstubs.MonitorObj request,
         io.grpc.stub.StreamObserver<rpcstubs.Void> responseObserver) {
       asyncUnimplementedUnaryCall(getStopSelfElectionMethod(), responseObserver);
     }
@@ -336,9 +398,23 @@ public final class ServerGrpc {
 
     /**
      */
+    public void receiveInvalidateReplicas(rpcstubs.Key request,
+        io.grpc.stub.StreamObserver<rpcstubs.Void> responseObserver) {
+      asyncUnimplementedUnaryCall(getReceiveInvalidateReplicasMethod(), responseObserver);
+    }
+
+    /**
+     */
     public void createReplica(rpcstubs.KeyValuePair request,
         io.grpc.stub.StreamObserver<rpcstubs.Void> responseObserver) {
       asyncUnimplementedUnaryCall(getCreateReplicaMethod(), responseObserver);
+    }
+
+    /**
+     */
+    public void receiveCreateReplica(rpcstubs.KeyValuePair request,
+        io.grpc.stub.StreamObserver<rpcstubs.Void> responseObserver) {
+      asyncUnimplementedUnaryCall(getReceiveCreateReplicaMethod(), responseObserver);
     }
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
@@ -375,7 +451,7 @@ public final class ServerGrpc {
             getStopSelfElectionMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                rpcstubs.Void,
+                rpcstubs.MonitorObj,
                 rpcstubs.Void>(
                   this, METHODID_STOP_SELF_ELECTION)))
           .addMethod(
@@ -386,12 +462,26 @@ public final class ServerGrpc {
                 rpcstubs.Void>(
                   this, METHODID_INVALIDATE_REPLICAS)))
           .addMethod(
+            getReceiveInvalidateReplicasMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                rpcstubs.Key,
+                rpcstubs.Void>(
+                  this, METHODID_RECEIVE_INVALIDATE_REPLICAS)))
+          .addMethod(
             getCreateReplicaMethod(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcstubs.KeyValuePair,
                 rpcstubs.Void>(
                   this, METHODID_CREATE_REPLICA)))
+          .addMethod(
+            getReceiveCreateReplicaMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                rpcstubs.KeyValuePair,
+                rpcstubs.Void>(
+                  this, METHODID_RECEIVE_CREATE_REPLICA)))
           .build();
     }
   }
@@ -444,7 +534,7 @@ public final class ServerGrpc {
 
     /**
      */
-    public void stopSelfElection(rpcstubs.Void request,
+    public void stopSelfElection(rpcstubs.MonitorObj request,
         io.grpc.stub.StreamObserver<rpcstubs.Void> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getStopSelfElectionMethod(), getCallOptions()), request, responseObserver);
@@ -460,10 +550,26 @@ public final class ServerGrpc {
 
     /**
      */
+    public void receiveInvalidateReplicas(rpcstubs.Key request,
+        io.grpc.stub.StreamObserver<rpcstubs.Void> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getReceiveInvalidateReplicasMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
     public void createReplica(rpcstubs.KeyValuePair request,
         io.grpc.stub.StreamObserver<rpcstubs.Void> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getCreateReplicaMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public void receiveCreateReplica(rpcstubs.KeyValuePair request,
+        io.grpc.stub.StreamObserver<rpcstubs.Void> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getReceiveCreateReplicaMethod(), getCallOptions()), request, responseObserver);
     }
   }
 
@@ -511,7 +617,7 @@ public final class ServerGrpc {
 
     /**
      */
-    public rpcstubs.Void stopSelfElection(rpcstubs.Void request) {
+    public rpcstubs.Void stopSelfElection(rpcstubs.MonitorObj request) {
       return blockingUnaryCall(
           getChannel(), getStopSelfElectionMethod(), getCallOptions(), request);
     }
@@ -525,9 +631,23 @@ public final class ServerGrpc {
 
     /**
      */
+    public rpcstubs.Void receiveInvalidateReplicas(rpcstubs.Key request) {
+      return blockingUnaryCall(
+          getChannel(), getReceiveInvalidateReplicasMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
     public rpcstubs.Void createReplica(rpcstubs.KeyValuePair request) {
       return blockingUnaryCall(
           getChannel(), getCreateReplicaMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public rpcstubs.Void receiveCreateReplica(rpcstubs.KeyValuePair request) {
+      return blockingUnaryCall(
+          getChannel(), getReceiveCreateReplicaMethod(), getCallOptions(), request);
     }
   }
 
@@ -580,7 +700,7 @@ public final class ServerGrpc {
     /**
      */
     public com.google.common.util.concurrent.ListenableFuture<rpcstubs.Void> stopSelfElection(
-        rpcstubs.Void request) {
+        rpcstubs.MonitorObj request) {
       return futureUnaryCall(
           getChannel().newCall(getStopSelfElectionMethod(), getCallOptions()), request);
     }
@@ -595,10 +715,26 @@ public final class ServerGrpc {
 
     /**
      */
+    public com.google.common.util.concurrent.ListenableFuture<rpcstubs.Void> receiveInvalidateReplicas(
+        rpcstubs.Key request) {
+      return futureUnaryCall(
+          getChannel().newCall(getReceiveInvalidateReplicasMethod(), getCallOptions()), request);
+    }
+
+    /**
+     */
     public com.google.common.util.concurrent.ListenableFuture<rpcstubs.Void> createReplica(
         rpcstubs.KeyValuePair request) {
       return futureUnaryCall(
           getChannel().newCall(getCreateReplicaMethod(), getCallOptions()), request);
+    }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<rpcstubs.Void> receiveCreateReplica(
+        rpcstubs.KeyValuePair request) {
+      return futureUnaryCall(
+          getChannel().newCall(getReceiveCreateReplicaMethod(), getCallOptions()), request);
     }
   }
 
@@ -608,7 +744,9 @@ public final class ServerGrpc {
   private static final int METHODID_ELECTION_PROCESS = 3;
   private static final int METHODID_STOP_SELF_ELECTION = 4;
   private static final int METHODID_INVALIDATE_REPLICAS = 5;
-  private static final int METHODID_CREATE_REPLICA = 6;
+  private static final int METHODID_RECEIVE_INVALIDATE_REPLICAS = 6;
+  private static final int METHODID_CREATE_REPLICA = 7;
+  private static final int METHODID_RECEIVE_CREATE_REPLICA = 8;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -644,15 +782,23 @@ public final class ServerGrpc {
               (io.grpc.stub.StreamObserver<rpcstubs.Void>) responseObserver);
           break;
         case METHODID_STOP_SELF_ELECTION:
-          serviceImpl.stopSelfElection((rpcstubs.Void) request,
+          serviceImpl.stopSelfElection((rpcstubs.MonitorObj) request,
               (io.grpc.stub.StreamObserver<rpcstubs.Void>) responseObserver);
           break;
         case METHODID_INVALIDATE_REPLICAS:
           serviceImpl.invalidateReplicas((rpcstubs.Key) request,
               (io.grpc.stub.StreamObserver<rpcstubs.Void>) responseObserver);
           break;
+        case METHODID_RECEIVE_INVALIDATE_REPLICAS:
+          serviceImpl.receiveInvalidateReplicas((rpcstubs.Key) request,
+              (io.grpc.stub.StreamObserver<rpcstubs.Void>) responseObserver);
+          break;
         case METHODID_CREATE_REPLICA:
           serviceImpl.createReplica((rpcstubs.KeyValuePair) request,
+              (io.grpc.stub.StreamObserver<rpcstubs.Void>) responseObserver);
+          break;
+        case METHODID_RECEIVE_CREATE_REPLICA:
+          serviceImpl.receiveCreateReplica((rpcstubs.KeyValuePair) request,
               (io.grpc.stub.StreamObserver<rpcstubs.Void>) responseObserver);
           break;
         default:
@@ -722,7 +868,9 @@ public final class ServerGrpc {
               .addMethod(getElectionProcessMethod())
               .addMethod(getStopSelfElectionMethod())
               .addMethod(getInvalidateReplicasMethod())
+              .addMethod(getReceiveInvalidateReplicasMethod())
               .addMethod(getCreateReplicaMethod())
+              .addMethod(getReceiveCreateReplicaMethod())
               .build();
         }
       }

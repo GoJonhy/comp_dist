@@ -5,9 +5,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c7433c91-458b-4458-a4c4-da9b0031de69" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../Client/Client.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../Client/Client.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Client/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client/src/main/java/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Client/src/main/java/client/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ConfigurationService/src/main/java/ConfigurationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ConfigurationService/src/main/java/ConfigurationService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Server/Server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Server.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Server/src/main/java/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/src/main/java/server/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/proto/contract.proto" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/proto/contract.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/ServerContract-1.0-jar-with-dependencies.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/ServerContract-1.0-jar-with-dependencies.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/ServerContract-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/ServerContract-1.0.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/contract.proto" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/contract.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/rpcstubs/Contract.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/rpcstubs/Contract.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/rpcstubs/ServerGrpc$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/rpcstubs/ServerGrpc$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/rpcstubs/ServerGrpc$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/rpcstubs/ServerGrpc$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/rpcstubs/ServerGrpc$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/rpcstubs/ServerGrpc$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/rpcstubs/ServerGrpc$MethodHandlers.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/rpcstubs/ServerGrpc$MethodHandlers.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/rpcstubs/ServerGrpc$ServerBaseDescriptorSupplier.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/rpcstubs/ServerGrpc$ServerBaseDescriptorSupplier.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/rpcstubs/ServerGrpc$ServerBlockingStub.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/rpcstubs/ServerGrpc$ServerBlockingStub.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/rpcstubs/ServerGrpc$ServerFileDescriptorSupplier.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/rpcstubs/ServerGrpc$ServerFileDescriptorSupplier.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/rpcstubs/ServerGrpc$ServerFutureStub.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/rpcstubs/ServerGrpc$ServerFutureStub.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/rpcstubs/ServerGrpc$ServerImplBase.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/rpcstubs/ServerGrpc$ServerImplBase.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/rpcstubs/ServerGrpc$ServerMethodDescriptorSupplier.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/rpcstubs/ServerGrpc$ServerMethodDescriptorSupplier.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/rpcstubs/ServerGrpc$ServerStub.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/rpcstubs/ServerGrpc$ServerStub.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/rpcstubs/ServerGrpc.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/rpcstubs/ServerGrpc.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/protobuf/grpc-java/rpcstubs/ServerGrpc.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/protobuf/grpc-java/rpcstubs/ServerGrpc.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/protobuf/java/rpcstubs/Contract.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/protobuf/java/rpcstubs/Contract.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/ServerContract-1.0-jar-with-dependencies.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/ServerContract-1.0-jar-with-dependencies.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,22 +138,22 @@
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="740" y="280" key="FileChooserDialogImpl/0.0.1920.1050@0.0.1920.1050" timestamp="1610577273923" />
-    <state width="1877" height="581" key="GridCell.Tab.0.bottom" timestamp="1610666735146">
+    <state width="1877" height="581" key="GridCell.Tab.0.bottom" timestamp="1610752004853">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1877" height="581" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1610666735146" />
-    <state width="1877" height="581" key="GridCell.Tab.0.center" timestamp="1610666735145">
+    <state width="1877" height="581" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1610752004853" />
+    <state width="1877" height="581" key="GridCell.Tab.0.center" timestamp="1610752004853">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1877" height="581" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1610666735145" />
-    <state width="1877" height="581" key="GridCell.Tab.0.left" timestamp="1610666735145">
+    <state width="1877" height="581" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1610752004853" />
+    <state width="1877" height="581" key="GridCell.Tab.0.left" timestamp="1610752004853">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1877" height="581" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1610666735145" />
-    <state width="1877" height="581" key="GridCell.Tab.0.right" timestamp="1610666735145">
+    <state width="1877" height="581" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1610752004853" />
+    <state width="1877" height="581" key="GridCell.Tab.0.right" timestamp="1610752004853">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1877" height="581" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1610666735145" />
+    <state width="1877" height="581" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1610752004853" />
     <state x="461" y="170" key="SettingsEditor" timestamp="1610657176563">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>

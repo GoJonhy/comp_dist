@@ -38,7 +38,14 @@
             <artifactId>ConfigurationServiceContract</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>${basedir}/../lib/ConfigurationServiceContract-1.0.jar</systemPath>
+            <systemPath>${basedir}/../lib/ConfigurationServiceContract-1.0-jar-with-dependencies.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>cd</groupId>
+            <artifactId>ServerContract</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/../lib/ServerContract-1.0-jar-with-dependencies.jar</systemPath>
         </dependency>
     </dependencies>
 

@@ -10,12 +10,21 @@ service Server {
  rpc Read(Key) returns (Value) ;
  rpc ReadChk(Key) returns (Value);
  rpc ElectionProcess(Void) returns (Void);
- rpc StopSelfElection(Void) returns (Void);
+ rpc StopSelfElection(MonitorObj) returns (Void);
  rpc InvalidateReplicas(Key) returns (Void);
+ rpc ReceiveInvalidateReplicas(Key) returns (Void);
  rpc CreateReplica(KeyValuePair) returns (Void);
+ rpc ReceiveCreateReplica(KeyValuePair) returns (Void);
 }
 
+
 message Void {}
+
+message MonitorObj{
+    string ip = 1;
+    int32 port = 2;
+    int64 timestamp = 3;
+}
 
 message KeyValuePair {
  Key k = 1;

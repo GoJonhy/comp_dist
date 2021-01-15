@@ -20,6 +20,11 @@ public final class Contract {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_baseservice_Void_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_baseservice_MonitorObj_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_baseservice_MonitorObj_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_baseservice_KeyValuePair_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -43,21 +48,26 @@ public final class Contract {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016contract.proto\022\013baseservice\"\006\n\004Void\"J\n" +
-      "\014KeyValuePair\022\033\n\001k\030\001 \001(\0132\020.baseservice.K" +
-      "ey\022\035\n\001v\030\002 \001(\0132\022.baseservice.Value\"\020\n\003Key" +
-      "\022\t\n\001k\030\001 \001(\t\"\022\n\005Value\022\t\n\001v\030\001 \001(\t2\213\003\n\006Serv" +
-      "er\0225\n\005Write\022\031.baseservice.KeyValuePair\032\021" +
-      ".baseservice.Void\022,\n\004Read\022\020.baseservice." +
-      "Key\032\022.baseservice.Value\022/\n\007ReadChk\022\020.bas" +
-      "eservice.Key\032\022.baseservice.Value\0227\n\017Elec" +
-      "tionProcess\022\021.baseservice.Void\032\021.baseser" +
-      "vice.Void\0228\n\020StopSelfElection\022\021.baseserv" +
-      "ice.Void\032\021.baseservice.Void\0229\n\022Invalidat" +
-      "eReplicas\022\020.baseservice.Key\032\021.baseservic" +
-      "e.Void\022=\n\rCreateReplica\022\031.baseservice.Ke" +
-      "yValuePair\032\021.baseservice.VoidB\014\n\010rpcstub" +
-      "sP\001b\006proto3"
+      "\n\016contract.proto\022\013baseservice\"\006\n\004Void\"9\n" +
+      "\nMonitorObj\022\n\n\002ip\030\001 \001(\t\022\014\n\004port\030\002 \001(\005\022\021\n" +
+      "\ttimestamp\030\003 \001(\003\"J\n\014KeyValuePair\022\033\n\001k\030\001 " +
+      "\001(\0132\020.baseservice.Key\022\035\n\001v\030\002 \001(\0132\022.bases" +
+      "ervice.Value\"\020\n\003Key\022\t\n\001k\030\001 \001(\t\"\022\n\005Value\022" +
+      "\t\n\001v\030\001 \001(\t2\231\004\n\006Server\0225\n\005Write\022\031.baseser" +
+      "vice.KeyValuePair\032\021.baseservice.Void\022,\n\004" +
+      "Read\022\020.baseservice.Key\032\022.baseservice.Val" +
+      "ue\022/\n\007ReadChk\022\020.baseservice.Key\032\022.basese" +
+      "rvice.Value\0227\n\017ElectionProcess\022\021.baseser" +
+      "vice.Void\032\021.baseservice.Void\022>\n\020StopSelf" +
+      "Election\022\027.baseservice.MonitorObj\032\021.base" +
+      "service.Void\0229\n\022InvalidateReplicas\022\020.bas" +
+      "eservice.Key\032\021.baseservice.Void\022@\n\031Recei" +
+      "veInvalidateReplicas\022\020.baseservice.Key\032\021" +
+      ".baseservice.Void\022=\n\rCreateReplica\022\031.bas" +
+      "eservice.KeyValuePair\032\021.baseservice.Void" +
+      "\022D\n\024ReceiveCreateReplica\022\031.baseservice.K" +
+      "eyValuePair\032\021.baseservice.VoidB\014\n\010rpcstu" +
+      "bsP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -69,20 +79,26 @@ public final class Contract {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_baseservice_Void_descriptor,
         new java.lang.String[] { });
-    internal_static_baseservice_KeyValuePair_descriptor =
+    internal_static_baseservice_MonitorObj_descriptor =
       getDescriptor().getMessageTypes().get(1);
+    internal_static_baseservice_MonitorObj_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_baseservice_MonitorObj_descriptor,
+        new java.lang.String[] { "Ip", "Port", "Timestamp", });
+    internal_static_baseservice_KeyValuePair_descriptor =
+      getDescriptor().getMessageTypes().get(2);
     internal_static_baseservice_KeyValuePair_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_baseservice_KeyValuePair_descriptor,
         new java.lang.String[] { "K", "V", });
     internal_static_baseservice_Key_descriptor =
-      getDescriptor().getMessageTypes().get(2);
+      getDescriptor().getMessageTypes().get(3);
     internal_static_baseservice_Key_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_baseservice_Key_descriptor,
         new java.lang.String[] { "K", });
     internal_static_baseservice_Value_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_baseservice_Value_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_baseservice_Value_descriptor,

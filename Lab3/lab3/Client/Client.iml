@@ -48,5 +48,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="ConfigurationServiceContract-1.0-jar-with-dependencies" level="project" />
+    <orderEntry type="library" name="ServerContract-1.0-jar-with-dependencies" level="project" />
   </component>
 </module>
