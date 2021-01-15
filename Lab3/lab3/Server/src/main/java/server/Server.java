@@ -16,6 +16,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Map;
@@ -84,6 +87,17 @@ public class Server extends ServerGrpc.ServerImplBase {
                 monitorIP = svcIP;
                 monitorPort = svcPort;
                 isMonitor = true;
+            }
+            File dbTxt = new File("filename.txt");
+
+
+            if (dbTxt.exists()) {
+                Scanner myReader = new Scanner(dbTxt);
+                while(myReader.hasNextLine()) {
+                    String data = myReader.nextLine();
+                    String[] kvpair = data.split(" ");
+                    db.put(kvpair[0], kvpair[1]);
+                }
             }
 
             System.out.println("Server started, listening on " + svcPort);
